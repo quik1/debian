@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Install OpenSSH
+sudo apt install -y openssh-server openssh-client
+
+# Enable and start SSH service
+sudo systemctl enable --now ssh
+
+# Check status of SSH
+systemctl status ssh
+
+# Edit Passwords config
+sudo vim /etc/ssh/sshd_config 
+
+PasswordAuthentication no
+
+
+PubkeyAuthentication yes
+EOF
+
+# On your Local Machine, copy your public key to the remote server
+ssh-copy-id debian12-user@debian12-IP_address
+
+# Restart SSH service
+sudo systemctl restart ssh
