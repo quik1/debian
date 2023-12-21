@@ -1,0 +1,139 @@
+#!/bin/bash
+
+# List of packages to install
+packages=(
+    git
+    zsh
+    zsh-autosuggestions
+    iwd
+    bluez
+    blueman
+    pipewire
+    pipewire-pulse
+    pipewire-audio-client-libraries
+    pipewire-bin
+    xdg-desktop-portal-wlr
+    xwayland
+    wayland-protocols
+    sway
+    swaybg
+    swayidle
+    swaylock
+    pamixer
+    wlogout
+    wdisplays
+    wob
+    grim
+    slurp
+    waybar
+    wofi
+    brightnessctl
+    foot
+    chromium
+    nautilus
+    libreoffice
+    gnome-system-monitor
+    system-config-printer
+    cups
+    xfonts-terminus
+    lxsession
+    wl-clipboard
+    pavucontrol
+    emacs-nox
+    meson
+    gnome-software
+    unzip
+    pkg-config
+    wayland-protocols
+    libwayland-dev
+    libfreetype-dev
+    libgtk-3-dev
+    libgtk-4-dev
+    libglew-dev
+    libqrencode-dev
+    scdoc
+    libsdl2-dev
+    libswscale-dev
+    libmupdf-dev
+    libmujs-dev
+    libopenjp2-7-dev
+    libgumbo-dev
+    libavutil-dev
+    libavcodec-dev
+    libavdevice-dev
+    libavformat-dev
+    libswscale-dev
+    libswresample-dev
+    libxkbcommon-dev
+    libjbig2dec0-dev
+    rofi
+    playerctl
+    spotify-client
+    kitty
+    alacritty
+    vlc
+    mpv
+    mpd
+    ncmpcpp
+    mpc
+    geany
+    geany-plugins
+    nodejs
+    node-regjsgen
+    node-regjsparser
+    node-pegjs
+    notepadqq
+    bluefish
+    bluefish-plugins
+    pix
+    celluloid
+    ario
+    haruna
+    ranger
+    stacer
+    mintstick
+    golang
+    syncthing
+    ghostwriter
+    dunst
+    intel-microcode
+    neofetch
+    htop
+    top
+    feh
+    picom
+)
+
+# Record start time
+start_time=$(date +%s)
+
+# Function to install a package if not already installed
+install_package() {
+    local package=$1
+    if ! dpkg -l | grep -q "^ii  $package "; then
+        echo "Installing $package..."
+        sudo apt-get install -y "$package"
+    else
+        echo "$package is already installed. Skipping..."
+    fi
+}
+
+# Iterate through packages and install
+for package in "${packages[@]}"; do
+    install_package "$package"
+done
+
+# Record end time
+end_time=$(date +%s)
+
+# Calculate installation time
+installation_time=$((end_time - start_time))
+
+# Create debpkg.txt file in Documents folder with a list of installed software
+output_file="$HOME/Documents/debpkg.txt"
+dpkg -l | awk '/^ii/ {print $2}' > "$output_file"
+
+# Display installation time
+echo
+echo "Installation completed in $installation_time seconds."
+echo "List of installed packages saved to $output_file."
